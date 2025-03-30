@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 
-import asyncio
+# /// script
+# dependencies = ["woob", "mcp"]
+# ///
+
+
 from mcp.server.fastmcp import FastMCP
 from woob.core import Woob
 from woob.capabilities.bank import CapBank
-import yaml
-import sys
-import json
-import requests
+import argparse
 from datetime import datetime
+import argparse
+import sys
+
+argparser = argparse.ArgumentParser(description="Woob MCP server")
+argparser.add_argument('--sse', action='store_true', help='Run in SSE mode (default stdio)')
+argparser.add_argument('--test', action='store_true', help='Test woob integration -- no MCP server')
+args = argparser.parse_args()
 
 mcp = FastMCP("woob", dependencies=['woob'])
 
@@ -19,7 +27,7 @@ def bank_get_accounts() -> str:
     """
     w = Woob()
     w.load_backends(CapBank)
-    s = ""
+    s = "\n"
     for backend in list(w.iter_backends()):
         for account in list(backend.iter_accounts()):
             prefix = ''
@@ -30,4 +38,10 @@ def bank_get_accounts() -> str:
 
 
 if __name__ == '__main__':
-    print(bank_get_accounts())
+    if args.test:
+        print(bank_get_accounts())
+        sys.exit(0)
+    transport = None
+    if args.sse:
+        transport = 'sse'
+    mcp.run(transport=transport)

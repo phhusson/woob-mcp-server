@@ -5,4 +5,4 @@ use a Local LLM!
 
 Add this in your MCP client/Claude Desktop:
 
-uv run git+https://github.com/phhusson/woob-mcp-server@main -- run.py
+uv tool run -v --from git+https://github.com/phhusson/woob-mcp-server@main python main.py

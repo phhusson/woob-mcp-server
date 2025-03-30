@@ -1,0 +1,5 @@
+[project]
+name = "woob-mcp-server"
+description = "A MCP server exposing woob functions, like accessing your bank accounts"
+authors = [ { name="Pierre-Hugues Husson", email="phh@phh.me"} ]
+dependencies = [ "mcp", "woob" ]

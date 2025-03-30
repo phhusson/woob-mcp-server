@@ -41,7 +41,7 @@ if __name__ == '__main__':
     if args.test:
         print(bank_get_accounts())
         sys.exit(0)
-    transport = None
+    transport = 'stdio'
     if args.sse:
         transport = 'sse'
     mcp.run(transport=transport)

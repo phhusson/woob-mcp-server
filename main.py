@@ -13,10 +13,6 @@ from datetime import datetime
 import argparse
 import sys
 
-argparser = argparse.ArgumentParser(description="Woob MCP server")
-argparser.add_argument('--sse', action='store_true', help='Run in SSE mode (default stdio)')
-argparser.add_argument('--test', action='store_true', help='Test woob integration -- no MCP server')
-args = argparser.parse_args()
 
 mcp = FastMCP("woob", dependencies=['woob'])
 
@@ -36,8 +32,12 @@ def bank_get_accounts() -> str:
             s += f"{backend.DESCRIPTION} -- {account.label} -- {prefix}{account.balance} {account.currency}\n"
     return s
 
+def main():
+    argparser = argparse.ArgumentParser(description="Woob MCP server")
+    argparser.add_argument('--sse', action='store_true', help='Run in SSE mode (default stdio)')
+    argparser.add_argument('--test', action='store_true', help='Test woob integration -- no MCP server')
+    args = argparser.parse_args()
 
-if __name__ == '__main__':
     if args.test:
         print(bank_get_accounts())
         sys.exit(0)
@@ -45,3 +45,6 @@ if __name__ == '__main__':
     if args.sse:
         transport = 'sse'
     mcp.run(transport=transport)
+
+if __name__ == '__main__':
+    main()
